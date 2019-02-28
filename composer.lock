@@ -4,9 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ab34fb8e63872d6934da076ff69e4b7",
-    "packages": [],
-    "packages-dev": [
+    "content-hash": "b36c4dd766cf30a5204d429c20f62623",
+    "packages": [
         {
             "name": "symfony/http-foundation",
             "version": "v4.2.3",
@@ -119,7 +118,9 @@
                 "shim"
             ],
             "time": "2018-09-21T13:07:52+00:00"
-        },
+        }
+    ],
+    "packages-dev": [
         {
             "name": "symfony/polyfill-php72",
             "version": "v1.10.0",
