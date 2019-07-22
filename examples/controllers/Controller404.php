@@ -17,18 +17,23 @@ require_once __DIR__.'/../ControllerInterface.php';
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
-class ControllerC implements ControllerInterface
+class Controller404 implements ControllerInterface
 {
+
+    private $router;
 
     public function __construct(Router $router){
         $this->router = $router;
+
     }
 
-    public function getHtml(Request $request):Response{
+    public function getHtml(Request $request, $params=[]):Response{
 
-        $redirectUrl = $this->router->buildRoute('page-b');
-        $response = new RedirectResponse($redirectUrl);
-        dump($response);
+        $response = new Response(
+            "404",
+            Response::HTTP_OK,
+            ['content-type' => 'text/html']
+        );
 
         return $response;
     }

@@ -12,52 +12,88 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-require 'RouteInterface.php';
-
-
-
-class RouteClass implements RouteInterface
+class RouteClass2 implements RouteInterface
 {
     private $pattern;
     private $routename;
     private $controller;
+    private $middleware;
 
-    public function __construct(string $pattern, string $routename, ControllerInterface $controller)
+
+    public function __construct(string $pattern, string $routename,  ControllerInterface $controller, MiddlewareInterface $middleware=NULL)
     {
-        $this->pattern = $pattern;
+
         $this->routename = $routename;
         $this->controller = $controller;
+        $this->pattern = $pattern;
+        $this->middleware = $middleware;
+
+
     }
+
     public function checkRoute(Request $request): bool
     {
-        if ($request->getRequestUri() === $this->pattern) {
-            return true;
-        } else {
-            return false;
-        }
+
+        $str = $request->getRequestUri();
+
+
+        $arr = explode("/", $str);
+
+        array_pop($arr);
+
+        $str = join('/', $arr);
+
+
+
+
+        return  $str == '/'.$this->pattern;
+
     }
+
+
     public function getController(): ControllerInterface
     {
+
         return $this->controller;
     }
 
-    public function getPattern()
-    {
-        return $this->pattern;
-    }
-
-    public function getRouteName()
+    public function getRouteName():string
     {
         return $this->routename;
     }
 
+    public function getUriParam(Request $request):Array
+    {
+
+        $uri = $request->getRequestUri();
+        $arr = explode("/", $uri);
+        //dd($arr[3]);
+        return [$arr[count($arr)-1]];
+
+    }
+
+    public function getMiddleware():?MiddlewareInterface
+    {
+        return $this->middleware;
+
+    }
+
+
+
+
+
+
+    public function buildRoute(array $uri_param = []):string
+    {
+
+
+                $pattern = '/'.$this->pattern.'/'.$uri_param[0];
+
+             return $pattern;
+
+            }
+
+
+
 
 }
-
-/*
-class RouteRedirectClass implements RouteInterface
-{
-    //private $pattern;
-    private $controller;
-*/
-

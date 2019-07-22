@@ -13,5 +13,12 @@ interface RouteInterface
 {
     public function checkRoute(Request $request): bool;
     public function getController(): ControllerInterface;
+
+    public function getUriParam(Request $request):array;
+
+    public function getMiddleware():?MiddlewareInterface;
+
+    public function getRouteName():string;
+    public function buildRoute(array $uri_param):string;
 }
 

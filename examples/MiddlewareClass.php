@@ -6,7 +6,18 @@
  * Time: 18:14
  */
 
-class MiddlewareClass
+use Symfony\Component\HttpFoundation\Request;
+require 'MiddlewareInterface.php';
+
+class MiddlewareClass implements MiddlewareInterface
 {
 
+    public function before (Request $request):void
+    {
+        session_start();
+
+        $_SESSION['user_name'] = 'Max';
+
+
+    }
 }

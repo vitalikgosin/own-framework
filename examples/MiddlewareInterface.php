@@ -9,14 +9,10 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-interface RouteInterface
+interface MiddlewareInterface
 {
-    public function checkRoute(Request $request): bool;
-    public function getController(): ControllerInterface;
 
-    public function getUriParam(Request $request):array;
+    public function before (Request $request):void;
 
-    public function getRouteName():string;
-    public function buildRoute(array $uri_param):string;
 }
 

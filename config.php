@@ -1,7 +1,2 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vitaly
- * Date: 19/03/2019
- * Time: 19:31
- */
+define ('BASE_URL', 'http://php-framework.test');

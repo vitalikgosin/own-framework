@@ -11,5 +11,5 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface ControllerInterface
 {
-    public function getHtml(Request $request): Response;
+    public function getHtml(Request $request, Array $params ): Response;
 }

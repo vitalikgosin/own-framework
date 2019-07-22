@@ -13,21 +13,25 @@ class FrontController
     }
 
     public function handle(Request $request): Response
-{
+    {
 
-$controller = $this->router->getController($request);
+        $controller_with_params = $this->router->getController($request);
 
-if ( $controller) {
-    $response = $controller->getHtml($request);
+        //$this->router->getMiddleware()->before($request);
+        if ($controller_with_params->getMiddleware()) {
+
+            dump($controller_with_params->getMiddleware()->before($request));
+
+        }
+
+
+
+
+    $response = $controller_with_params->getController()->getHtml($request, $controller_with_params->getParams());
+
+        //$controller_with_params->getController()->insertMethod();
     return $response;
-}
-else{
-   // dd (gettype($this->router->buildRoute( 'page-b')));
-//    $redirectUrl  = $this->router->buildRoute( 'page-b');
-//    $response = new RedirectResponse($redirectUrl);
 
-    return $response;
-}
 }
 
 }

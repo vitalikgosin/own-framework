@@ -8,15 +8,16 @@
 
 require 'DatabaseInterface.php';
 
-class DatabaseClass implements DatabaseInterface
+class DatabaseClass2 implements DatabaseInterface
 {
+
 
     private $host;
     private $username;
     private $password;
     private $db_name;
     private $db_connection;
-    private $db_bool_connection;
+    private $dbh;
 
     public function __construct(string $host, string $username, string $password, string $db_name)
     {
@@ -27,19 +28,15 @@ class DatabaseClass implements DatabaseInterface
         //$this->db_connection = $db_connection;
 
 
+        $dsn = 'mysql:dbname='.$db_name.';host='.$host;
 
-        $this->db_connection = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
-        if ($this->db_connection == false) {                  //---------- check connection
-            print("Ошибка подключения: "
-                . mysqli_connect_error());
-            die();
-        }
-        //print("Соединение установлено");
-    mysqli_set_charset($this->db_connection, "utf8");
+        $this->dbh = new PDO($dsn, $username, $password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
 
 
 
     }
+    /*
 
     private function db_get_prepare_stmt($link, $sql, $data = []) {
         $stmt = mysqli_prepare($link, $sql);
@@ -79,42 +76,17 @@ class DatabaseClass implements DatabaseInterface
         return $stmt;
     }
 
-
+*/
 
     public function db_select(string $table_name, string $where, array $params =[])
     {
-
         $rows_data = [];
 
-
-
-            //dump($id_key);
-
-            $sql_data_qw = "SELECT * FROM `$table_name` WHERE $where ";
-
-
-            $sql_dt = $params;
-
-            $stmt = $this->db_get_prepare_stmt($this->db_connection, $sql_data_qw, $sql_dt);
-
-            $result_sql_qw = mysqli_stmt_execute($stmt);
-
-
-            //$result_data = mysqli_query($this->db_connection, $sql_data);
-
-           // dump($result_dat);
-
-            //------ check results
-
-            if (!$result_sql_qw) {
-                $error = mysqli_error($this->db_connection);
-                print("Error MySQL: "
-                    . $error);
-                die();
+        $stmt =  $this->dbh->prepare("SELECT * FROM `$table_name` WHERE $where ");
+       $stmt->execute($params);
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $rows_data[] = $row;
             }
-
-
-
 
 
 
@@ -182,12 +154,36 @@ class DatabaseClass implements DatabaseInterface
 
 //dodelat + update;
 
+
+
     //----------------------------------------------------------------------------------------------------update
 
-        public
-        function db_update()
-        {
-        }
+    public function db_update(string $table_name, string $where, array $update_params =[])
+    {
+        //$stmt =  $this->dbh->prepare("update $table_name set $update_params where $where");
+
+
+        $set_params='';
+        $set_vals=[];
+
+
+        foreach ($update_params as $key => $val){
+        $set_params .= $key.'=?,';
+        $set_vals[] = $val;
+
+  } ;
+
+        $set_params = substr($set_params, 0, -1);
+
+
+        $sql = "UPDATE $table_name SET $set_params WHERE $where";
+
+        $stmt= $this->dbh->prepare($sql);
+
+        $stmt->execute($set_vals);
+
+
+    }
 
 
 

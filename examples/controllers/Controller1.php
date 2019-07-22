@@ -13,12 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 require_once __DIR__.'/../ControllerInterface.php';
 
-class ControllerA implements ControllerInterface
+
+class Controller1 implements ControllerInterface
 {
 
-    public function getHtml(Request $request):Response{
+
+
+    public function getHtml(Request $request, $uri_param=[]):Response{
+
+
+
         $response = new Response(
-            "content1",
+            "content",
             Response::HTTP_OK,
             ['content-type' => 'text/html']
         );
